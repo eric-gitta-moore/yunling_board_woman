@@ -1,0 +1,188 @@
+<!--{block return}-->
+
+<!--{if $jquery_switch}-->
+<script src="{$cdn_url}/source/plugin/yunling_board_woman/static/jquery-1.8.3.min.js"></script>
+<!--{/if}-->
+
+<link id="yunling_board_woman_css" data-href="{$cdn_url}/source/plugin/yunling_board_woman/static/pio.css" rel="stylesheet" type="text/css"/>
+<div id="pio-container" class="pio-container {$mode}" style="display:none;" >
+    <div class="pio-action"></div>
+    <canvas id="pio" width="{$width}" height="{$height}"></canvas>
+</div>
+<script id="yunling_board_woman_l2d" src-data="{$cdn_url}/source/plugin/yunling_board_woman/static/l2d.js"></script>
+<script id="yunling_board_woman_pio_js" src-data="{$cdn_url}/source/plugin/yunling_board_woman/static/pio.js"></script>
+<script>
+    jQuery(function () {
+        let yunling_board_woman_interval = setInterval(function () {
+            if (document.readyState == "complete") {
+                //code
+
+                jQuery("#yunling_board_woman_css").attr("href",jQuery("#yunling_board_woman_css").attr("data-href"));
+                jQuery("#yunling_board_woman_l2d").attr("src",jQuery("#yunling_board_woman_l2d").attr("src-data"));
+                jQuery("#yunling_board_woman_pio_js").attr("src",jQuery("#yunling_board_woman_pio_js").attr("src-data"));
+
+                var Paul_Pio_interval =  setInterval(function () {
+
+                    if (typeof Paul_Pio != 'undefined' && typeof loadlive2d != 'undefined')
+                    {
+                        jQuery("#pio-container").css("display","inline-block");
+
+                        var pio = new Paul_Pio({$loader_json});
+
+
+                        <!--{if $rand_say_switch}-->
+                        window.setInterval(showHitokoto,30000);//30000
+                        let dialog = jQuery("div.pio-dialog")[0];
+
+                        function render(text) {
+                            if(text.constructor === Array){
+                                dialog.innerText = modules.rand(text);
+                            }
+                            else if(text.constructor === String){
+                                dialog.innerText = text;
+                            }
+                            else{
+                                dialog.innerText = "输入内容出现问题了 X_X";
+                            }
+
+                            dialog.classList.add("active");
+
+                            clearTimeout(timer);
+                            var timer = setTimeout(function () {
+                                dialog.classList.remove("active");
+                            }, 5000);
+                        }
+
+                        function showHitokoto(){
+                            jQuery.getJSON('https://v1.hitokoto.cn/',function(result){
+                                render(result.hitokoto);
+                            });
+                        }
+
+                        var re = /x/;
+                        // console.log(re);
+                        re.toString = function() {
+                            render('哈哈，你打开了控制台，是想要看看我的秘密吗？');
+                            return '';
+                        };
+
+                        jQuery(document).on('copy', function (){
+                            render('你都复制了些什么呀，转载要记得加上出处哦~~');
+                        });
+                        <!--{/if}-->
+                        clearInterval(Paul_Pio_interval);
+                    }
+
+                },100);
+
+                clearInterval(yunling_board_woman_interval);
+            }
+        }, 100);
+    });
+
+    <!--{if false}-->
+    jQuery(
+        function ()
+        {
+            setTimeout(function ()
+            {
+                jQuery("#yunling_board_woman_css").attr("href",jQuery("#yunling_board_woman_css").attr("data-href"));
+                jQuery("#yunling_board_woman_l2d").attr("src",jQuery("#yunling_board_woman_l2d").attr("data-src"));
+                jQuery("#yunling_board_woman_pio_js").attr("src",jQuery("#yunling_board_woman_pio_js").attr("data-src"));
+
+                var pio = new Paul_Pio({$loader_json});
+
+
+                <!--{if $rand_say_switch}-->
+                window.setInterval(showHitokoto,30000);//30000
+                let dialog = jQuery("div.pio-dialog")[0];
+
+                function render(text) {
+                    if(text.constructor === Array){
+                        dialog.innerText = modules.rand(text);
+                    }
+                    else if(text.constructor === String){
+                        dialog.innerText = text;
+                    }
+                    else{
+                        dialog.innerText = "输入内容出现问题了 X_X";
+                    }
+
+                    dialog.classList.add("active");
+
+                    clearTimeout(timer);
+                    var timer = setTimeout(function () {
+                        dialog.classList.remove("active");
+                    }, 5000);
+                }
+
+                function showHitokoto(){
+                    jQuery.getJSON('https://v1.hitokoto.cn/',function(result){
+                        render(result.hitokoto);
+                    });
+                }
+
+                var re = /x/;
+                // console.log(re);
+                re.toString = function() {
+                    render('哈哈，你打开了控制台，是想要看看我的秘密吗？');
+                    return '';
+                };
+
+                jQuery(document).on('copy', function (){
+                    render('你都复制了些什么呀，转载要记得加上出处哦~~');
+                });
+                <!--{/if}-->
+
+            },1000);
+        }
+    );
+    <!--{/if}-->
+</script>
+
+<!--{if $rand_say_switch && false}-->
+<script>
+    (function () {
+        window.setInterval(showHitokoto,30000);//30000
+
+        let dialog = jQuery("div.pio-dialog")[0];
+
+        function render(text) {
+            if(text.constructor === Array){
+                dialog.innerText = modules.rand(text);
+            }
+            else if(text.constructor === String){
+                dialog.innerText = text;
+            }
+            else{
+                dialog.innerText = "输入内容出现问题了 X_X";
+            }
+
+            dialog.classList.add("active");
+
+            clearTimeout(timer);
+            var timer = setTimeout(function () {
+                dialog.classList.remove("active");
+            }, 5000);
+        }
+
+        function showHitokoto(){
+            jQuery.getJSON('https://v1.hitokoto.cn/',function(result){
+                render(result.hitokoto);
+            });
+        }
+
+        var re = /x/;
+        // console.log(re);
+        re.toString = function() {
+            render('哈哈，你打开了控制台，是想要看看我的秘密吗？');
+            return '';
+        };
+
+        jQuery(document).on('copy', function (){
+            render('你都复制了些什么呀，转载要记得加上出处哦~~');
+        });
+    })();
+</script>
+<!--{/if}-->
+<!--{/block}-->
